@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
     paddingLeft: 8,
   },
   productBrand: {
-    color: '#1efc95',
+    color: '#20a869',
     fontSize: 14,
   },
   productName: {

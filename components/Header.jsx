@@ -34,7 +34,7 @@ export default function Header() {
         style={styles.hightlight}
       >
         <View style={styles.headerBtn}>
-          <Ionicons name="person-outline" size={24} color="black" />
+          <Ionicons name="person-outline" size={22} color="black" />
         </View>
       </TouchableHighlight>
     </View>
