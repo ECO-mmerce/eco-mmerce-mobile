@@ -4,11 +4,10 @@ import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from './screens/HomeScreen';
-import Logo from './components/Logo';
 import UserScreen from './screens/UserScreen';
 import CartScreen from './screens/CartScreen';
 import DetailScreen from './screens/DetailScreen';
-
+import Toast from 'react-native-toast-message';
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -44,6 +43,7 @@ export default function App() {
           }}
         />
       </Stack.Navigator>
+      <Toast ref={(ref) => Toast.setRef(ref)} />
     </NavigationContainer>
   );
 }

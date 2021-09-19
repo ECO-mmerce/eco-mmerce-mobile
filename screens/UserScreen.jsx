@@ -1,11 +1,12 @@
 import React from 'react';
 import { Button, StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '../components/Header';
 import OrderCard from '../components/OrderCard';
 
 export default function UserScreen() {
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Header />
       <View style={styles.spaceContainer}>
         <Text style={styles.subTitle}>My Orders</Text>
@@ -14,7 +15,7 @@ export default function UserScreen() {
         <OrderCard />
       </View>
       <Button title="Logout" color="#f44336" />
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -22,7 +23,6 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#d8e1e3',
     flex: 1,
-    paddingTop: 30,
     paddingBottom: 20,
     paddingHorizontal: 12,
   },

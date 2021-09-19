@@ -10,6 +10,7 @@ import {
 import productImage from '../assets/stock.png';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/core';
+import Toast from 'react-native-toast-message';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -51,8 +52,12 @@ export default function ItemCard() {
           </View>
           <TouchableHighlight
             onPress={() => {
-              alert('Add');
-              console.log('add');
+              Toast.show({
+                type: 'success',
+                text1: 'Success',
+                text2: 'Item added to cart',
+                position: 'bottom',
+              });
             }}
             underlayColor="#1da365"
             style={styles.hightlight}
