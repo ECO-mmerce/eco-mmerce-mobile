@@ -62,7 +62,7 @@ export default function HomeScreen({ navigation }) {
             justifyContent: 'center',
             padding: 20,
             borderRadius: 50,
-            backgroundColor: '#1efc95',
+            backgroundColor: '#7ce6b8',
           }}
         >
           <Ionicons name="ios-scan" size={18} color="#5c5c5c" />

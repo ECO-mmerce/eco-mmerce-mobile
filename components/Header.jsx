@@ -26,7 +26,13 @@ export default function Header() {
       <Logo />
       <TouchableHighlight
         onPress={() => {
-          navigation.navigate('Cart');
+          checkToken().then((returnValue) => {
+            if (returnValue) {
+              navigation.navigate('Cart');
+            } else {
+              navigation.navigate('Login');
+            }
+          });
         }}
         underlayColor="#1da365"
         style={styles.hightlight}

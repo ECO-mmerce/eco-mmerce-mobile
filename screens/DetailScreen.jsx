@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   Image,
@@ -7,11 +7,11 @@ import {
   Text,
   TouchableHighlight,
   View,
-} from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import Header from "../components/Header";
-import { Ionicons } from "@expo/vector-icons";
-import { fetchProductDetail, addQty } from "../store";
+} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import Header from '../components/Header';
+import { Ionicons } from '@expo/vector-icons';
+import { fetchProductDetail, addQty, checkToken } from '../store';
 
 export default function DetailScreen({ route, navigation }) {
   const [productDetail, setProductDetail] = useState({});
@@ -25,7 +25,7 @@ export default function DetailScreen({ route, navigation }) {
     <SafeAreaView style={styles.container}>
       <Header />
       <TouchableHighlight
-        underlayColor={"#bfbfbf80"}
+        underlayColor={'#bfbfbf80'}
         style={styles.touchStyle}
         onPress={() => {
           navigation.goBack();
@@ -42,14 +42,14 @@ export default function DetailScreen({ route, navigation }) {
           source={{ uri: productDetail.picture }}
         />
         <Text style={styles.productPrice}>
-          Rp{" "}
+          Rp{' '}
           {productDetail.price
             ?.toString()
-            .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
+            .replace(/\B(?=(\d{3})+(?!\d))/g, '.')}
         </Text>
         <View
           style={{
-            backgroundColor: "#edf2f0",
+            backgroundColor: '#edf2f0',
             padding: 12,
             borderRadius: 12,
             marginTop: 12,
@@ -63,19 +63,19 @@ export default function DetailScreen({ route, navigation }) {
             {productDetail.Category?.name}
           </Text>
           <Text
-            style={{ fontWeight: "bold", color: "#20a869", marginBottom: 12 }}
+            style={{ fontWeight: 'bold', color: '#20a869', marginBottom: 12 }}
           >
-            By:{" "}
+            By:{' '}
             {productDetail.UsersProducts?.map((seller) => {
               return `${seller.User.firstName} ${seller.User.lastName}`;
             })}
           </Text>
-          <Text style={{ color: "#404040" }}>
-            Weight:{" "}
-            {productDetail.weight < 1 ? "1 KG" : productDetail.weight + " KG"}
+          <Text style={{ color: '#404040' }}>
+            Weight:{' '}
+            {productDetail.weight < 1 ? '1 KG' : productDetail.weight + ' KG'}
           </Text>
-          <Text style={{ color: "#404040" }}>
-            Stock: {productDetail.stock ? productDetail.stock : "Out of stock"}
+          <Text style={{ color: '#404040' }}>
+            Stock: {productDetail.stock ? productDetail.stock : 'Out of stock'}
           </Text>
         </View>
         <View
@@ -87,27 +87,27 @@ export default function DetailScreen({ route, navigation }) {
           <Text style={{ ...styles.productSubTitle, marginTop: 0 }}>
             Description
           </Text>
-          <Text style={{ color: "#404040" }}>{productDetail.description}</Text>
+          <Text style={{ color: '#404040' }}>{productDetail.description}</Text>
           <Text style={styles.productSubTitle}>Ingredients</Text>
           {productDetail.ingridient?.map((ingredient, i) => (
-            <Text style={{ color: "#404040" }} key={"ingredient-list-" + i}>
+            <Text style={{ color: '#404040' }} key={'ingredient-list-' + i}>
               - {ingredient}
             </Text>
           ))}
-          <Text style={{ ...styles.productSubTitle, color: "red" }}>
+          <Text style={{ ...styles.productSubTitle, color: 'red' }}>
             Harmful Ingredients
           </Text>
           {productDetail.harmfulIngidient?.length ? (
             productDetail.harmfulIngidient?.map((ingredient, i) => (
               <Text
-                style={{ color: "#404040" }}
-                key={"harmful-ingredient-list-" + i}
+                style={{ color: '#404040' }}
+                key={'harmful-ingredient-list-' + i}
               >
                 - {ingredient}
               </Text>
             ))
           ) : (
-            <Text style={{ color: "#404040" }}>None</Text>
+            <Text style={{ color: '#404040' }}>None</Text>
           )}
         </View>
       </ScrollView>
@@ -115,19 +115,25 @@ export default function DetailScreen({ route, navigation }) {
         <View style={{ flex: 1, marginRight: 8 }}>
           <Button
             title="Add to cart"
-            color={Number(productDetail.status) ? "#ffc273" : "#20a869"}
+            color={Number(productDetail.status) ? '#ffc273' : '#20a869'}
             onPress={() => {
               addQty(productDetail.id);
             }}
           />
         </View>
         <TouchableHighlight
-          underlayColor={"#bfbfbf80"}
+          underlayColor={'#bfbfbf80'}
           style={{
             borderRadius: 4,
           }}
           onPress={() => {
-            navigation.navigate("Chat");
+            checkToken().then((returnValue) => {
+              if (returnValue) {
+                navigation.navigate('Chat');
+              } else {
+                navigation.navigate('Login');
+              }
+            });
           }}
         >
           <View style={styles.chatTouch}>
@@ -145,18 +151,18 @@ export default function DetailScreen({ route, navigation }) {
 // Brand, nama barang, category, nama seller, description, ingredients, price
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#d8e1e3",
+    backgroundColor: '#d8e1e3',
     flex: 1,
     paddingHorizontal: 12,
     paddingBottom: 20,
   },
   containerHorizontal: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     flexShrink: 1,
   },
   bottomContainer: {
-    flexDirection: "row",
+    flexDirection: 'row',
   },
   touchStyle: {
     width: 100,
@@ -168,7 +174,7 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
   productImage: {
-    width: "100%",
+    width: '100%',
     height: undefined,
     aspectRatio: 1 / 1,
     borderRadius: 12,
@@ -179,36 +185,36 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   backText: {
-    color: "#20a869",
+    color: '#20a869',
   },
   productBrand: {
-    color: "#20a869",
+    color: '#20a869',
     fontSize: 16,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   productName: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
     fontSize: 26,
-    color: "#525252",
+    color: '#525252',
   },
   productPrice: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
     fontSize: 26,
-    textAlign: "center",
-    color: "#404040",
+    textAlign: 'center',
+    color: '#404040',
   },
   productCategory: {
-    color: "#707070",
+    color: '#707070',
   },
   productSubTitle: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
     fontSize: 16,
-    color: "#404040",
+    color: '#404040',
     marginTop: 12,
   },
   chatTouch: {
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     width: 80,
   },
 });
