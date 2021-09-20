@@ -15,7 +15,7 @@ import { checkToken, login, register } from '../store';
 
 const windowWidth = Dimensions.get('window').width;
 
-export default function ItemCard() {
+export default function ItemCard({ product }) {
   const brandName = 'Brand Name';
   const productName = 'Product Name';
   const sellerName = 'Seller Name';
@@ -30,25 +30,37 @@ export default function ItemCard() {
     <View style={styles.outerContainer}>
       <TouchableHighlight
         onPress={() => {
-          navigation.navigate('Detail');
+          navigation.navigate('Detail', product.id);
         }}
         underlayColor="#1da365"
         style={styles.hightlightDetail}
       >
         <View style={styles.container}>
-          <Image source={productImage} style={styles.productImage} />
+          <Image
+            source={{ uri: product.picture }}
+            style={styles.productImage}
+          />
           <View style={styles.detailContainer}>
             <Text style={styles.productBrand}>
-              {brandName.length < 20 ? brandName : cutText(brandName, 20)}
+              {product.Brands[0].name.length < 20
+                ? product.Brands[0].name
+                : cutText(product.Brands[0].name, 20)}
             </Text>
             <Text style={styles.productName}>
-              {productName.length < 13 ? productName : cutText(productName, 13)}
+              {product.name.length < 13
+                ? product.name
+                : cutText(product.name, 13)}
             </Text>
             <Text style={styles.productCategory}>
-              {sellerName.length < 13 ? sellerName : cutText(sellerName, 13)}
+              {product.Category.name.length < 13
+                ? product.Category.name
+                : cutText(product.Category.name, 13)}
             </Text>
             <View style={styles.priceContainer}>
-              <Text style={styles.productPrice}>Rp 222.000.000</Text>
+              <Text style={styles.productPrice}>
+                Rp
+                {product.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')}
+              </Text>
             </View>
           </View>
           <TouchableHighlight

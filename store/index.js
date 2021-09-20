@@ -119,3 +119,21 @@ export async function logout() {
     console.log(err);
   }
 }
+
+export async function fetchProducts() {
+  try {
+    const { data } = await serverAPI.get(baseURL + '/buyers/products');
+    return data;
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export async function fetchProductDetail(id) {
+  try {
+    const { data } = await serverAPI.get(baseURL + '/buyers/products/' + id);
+    return data;
+  } catch (err) {
+    console.log(err);
+  }
+}

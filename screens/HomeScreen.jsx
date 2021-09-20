@@ -1,17 +1,45 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { FlatList, RefreshControl, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '../components/Header';
 import ItemCard from '../components/ItemCard';
-import Toast from 'react-native-toast-message';
+import { fetchProducts } from '../store';
+
+const renderItem = ({ item }) => <ItemCard product={item} />;
 
 export default function HomeScreen() {
+  const [products, setProducts] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
+
+  useEffect(() => {
+    fetchProducts().then((returnValue) => setProducts(returnValue));
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
       <Header />
-      <ItemCard />
-      <ItemCard />
-      <ItemCard />
+      {/* {products.map((product, i) => {
+        return <ItemCard key={product.id} product={product} />;
+      })} */}
+      <FlatList
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={() => {
+              setRefreshing(true);
+              fetchProducts().then((returnValue) => {
+                setProducts(returnValue);
+                setRefreshing(false);
+              });
+            }}
+          />
+        }
+        data={products}
+        renderItem={renderItem}
+        keyExtractor={(item) => {
+          return item.id.toString();
+        }}
+      />
     </SafeAreaView>
   );
 }

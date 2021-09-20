@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import {
   Button,
+  Dimensions,
+  Image,
   StyleSheet,
   Text,
   TouchableHighlight,
@@ -13,6 +15,10 @@ import { checkToken, logout } from '../store';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/core';
 import Toast from 'react-native-toast-message';
+
+import logoCircle from '../assets/logo-circle.png';
+
+const windowWidth = Dimensions.get('window').width;
 
 export default function UserScreen() {
   const [isToken, setIsToken] = useState(true);
@@ -59,6 +65,9 @@ export default function UserScreen() {
     return (
       <SafeAreaView style={styles.container}>
         <Header />
+        <View style={{ width: '100%', alignItems: 'center' }}>
+          <Image style={styles.logo} source={logoCircle} />
+        </View>
         <View style={styles.formContainer}>
           <View style={styles.background}>
             <Text
@@ -145,13 +154,17 @@ const styles = StyleSheet.create({
   formContainer: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
   },
   background: {
     backgroundColor: 'white',
     padding: 30,
     borderRadius: 12,
     width: '100%',
+  },
+  logo: {
+    width: windowWidth * 0.5,
+    height: windowWidth * 0.5,
   },
   spaceContainer: {
     flex: 1,
