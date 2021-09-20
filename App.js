@@ -12,6 +12,7 @@ import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import ChatScreen from './screens/ChatScreen';
 import MidtransScreen from './screens/MidtransScreen';
+import CheckProductScreen from './screens/CheckProductScreen';
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -70,6 +71,13 @@ export default function App() {
         <Stack.Screen
           name="Midtrans"
           component={MidtransScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="CheckProduct"
+          component={CheckProductScreen}
           options={{
             headerShown: false,
           }}
