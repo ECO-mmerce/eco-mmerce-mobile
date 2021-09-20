@@ -1,15 +1,16 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React from "react";
+import { StyleSheet, Text, View } from "react-native";
 
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import HomeScreen from './screens/HomeScreen';
-import UserScreen from './screens/UserScreen';
-import CartScreen from './screens/CartScreen';
-import DetailScreen from './screens/DetailScreen';
-import Toast from 'react-native-toast-message';
-import LoginScreen from './screens/LoginScreen';
-import RegisterScreen from './screens/RegisterScreen';
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import HomeScreen from "./screens/HomeScreen";
+import UserScreen from "./screens/UserScreen";
+import CartScreen from "./screens/CartScreen";
+import DetailScreen from "./screens/DetailScreen";
+import Toast from "react-native-toast-message";
+import LoginScreen from "./screens/LoginScreen";
+import RegisterScreen from "./screens/RegisterScreen";
+import ChatScreen from "./screens/ChatScreen";
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -45,6 +46,13 @@ export default function App() {
           }}
         />
         <Stack.Screen
+          name="Chat"
+          component={ChatScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
           name="Login"
           component={LoginScreen}
           options={{
@@ -67,8 +75,8 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });

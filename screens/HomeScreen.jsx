@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { FlatList, RefreshControl, StyleSheet, Text, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import Header from '../components/Header';
-import ItemCard from '../components/ItemCard';
-import { fetchProducts } from '../store';
+import React, { useEffect, useState } from "react";
+import { FlatList, RefreshControl, StyleSheet, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import Header from "../components/Header";
+import ItemCard from "../components/ItemCard";
+import { fetchProducts } from "../store";
 
 const renderItem = ({ item }) => <ItemCard product={item} />;
 
@@ -18,12 +18,10 @@ export default function HomeScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <Header />
-      {/* {products.map((product, i) => {
-        return <ItemCard key={product.id} product={product} />;
-      })} */}
       <FlatList
         refreshControl={
           <RefreshControl
+            colors={["#52d9a8"]}
             refreshing={refreshing}
             onRefresh={() => {
               setRefreshing(true);
@@ -46,7 +44,7 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#d8e1e3',
+    backgroundColor: "#d8e1e3",
     flex: 1,
     paddingHorizontal: 12,
   },

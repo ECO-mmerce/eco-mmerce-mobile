@@ -18,9 +18,9 @@ import { useNavigation } from "@react-navigation/core";
 import Toast from "react-native-toast-message";
 import { fetchHistory } from "../store";
 
-import logoCircle from '../assets/logo-circle.png';
+import logoCircle from "../assets/logo-circle.png";
 
-const windowWidth = Dimensions.get('window').width;
+const windowWidth = Dimensions.get("window").width;
 
 export default function UserScreen() {
   const [history, setHistory] = useState([]);
@@ -50,7 +50,7 @@ export default function UserScreen() {
           <Text style={styles.subTitle}>My Orders</Text>
           <ScrollView>
             {history.map((data) => {
-              return <OrderCard data={data} />;
+              return <OrderCard key={data.Product.id} data={data} />;
             })}
           </ScrollView>
         </View>
@@ -78,7 +78,7 @@ export default function UserScreen() {
     return (
       <SafeAreaView style={styles.container}>
         <Header />
-        <View style={{ width: '100%', alignItems: 'center' }}>
+        <View style={{ width: "100%", alignItems: "center" }}>
           <Image style={styles.logo} source={logoCircle} />
         </View>
         <View style={styles.formContainer}>
@@ -166,8 +166,8 @@ const styles = StyleSheet.create({
   },
   formContainer: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'flex-start',
+    alignItems: "center",
+    justifyContent: "flex-start",
   },
   background: {
     backgroundColor: "white",

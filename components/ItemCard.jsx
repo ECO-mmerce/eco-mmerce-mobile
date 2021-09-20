@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   StyleSheet,
   Text,
@@ -6,22 +6,22 @@ import {
   Image,
   Dimensions,
   TouchableHighlight,
-} from 'react-native';
-import productImage from '../assets/stock.png';
-import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/core';
-import Toast from 'react-native-toast-message';
-import { checkToken, login, register } from '../store';
+} from "react-native";
+import productImage from "../assets/stock.png";
+import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/core";
+import Toast from "react-native-toast-message";
+import { checkToken, login, register, addQty } from "../store";
 
-const windowWidth = Dimensions.get('window').width;
+const windowWidth = Dimensions.get("window").width;
 
 export default function ItemCard({ product }) {
-  const brandName = 'Brand Name';
-  const productName = 'Product Name';
-  const sellerName = 'Seller Name';
+  const brandName = "Brand Name";
+  const productName = "Product Name";
+  const sellerName = "Seller Name";
 
   const cutText = (text, length) => {
-    return text.slice(0, length) + '...';
+    return text.slice(0, length) + "...";
   };
 
   const navigation = useNavigation();
@@ -30,7 +30,7 @@ export default function ItemCard({ product }) {
     <View style={styles.outerContainer}>
       <TouchableHighlight
         onPress={() => {
-          navigation.navigate('Detail', product.id);
+          navigation.navigate("Detail", product.id);
         }}
         underlayColor="#1da365"
         style={styles.hightlightDetail}
@@ -58,19 +58,15 @@ export default function ItemCard({ product }) {
             </Text>
             <View style={styles.priceContainer}>
               <Text style={styles.productPrice}>
-                Rp
-                {product.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')}
+                Rp{" "}
+                {product.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
+                , 00
               </Text>
             </View>
           </View>
           <TouchableHighlight
-            onPress={async () => {
-              Toast.show({
-                type: 'success',
-                text1: 'Success',
-                text2: 'Item added to cart',
-                position: 'bottom',
-              });
+            onPress={() => {
+              addQty(product.id);
             }}
             underlayColor="#1da365"
             style={styles.hightlight}
@@ -87,11 +83,11 @@ export default function ItemCard({ product }) {
 // Merk, nama, category, seller, harga, tombol add to cart
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
+    flexDirection: "row",
     padding: 6,
     borderRadius: 12,
-    backgroundColor: '#f0fffb',
-    position: 'relative',
+    backgroundColor: "#f0fffb",
+    position: "relative",
   },
   outerContainer: {
     marginBottom: 8,
@@ -100,15 +96,15 @@ const styles = StyleSheet.create({
     paddingLeft: 8,
   },
   productBrand: {
-    color: '#20a869',
+    color: "#20a869",
     fontSize: 14,
   },
   productName: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     fontSize: 16,
   },
   productCategory: {
-    color: '#888',
+    color: "#888",
     fontSize: 14,
   },
   productPrice: {
@@ -121,17 +117,17 @@ const styles = StyleSheet.create({
   },
   priceContainer: {
     flex: 1,
-    justifyContent: 'flex-end',
+    justifyContent: "flex-end",
   },
   headerBtn: {
     padding: 12,
-    backgroundColor: '#1efc95',
+    backgroundColor: "#1efc95",
     borderRadius: 12,
   },
   hightlight: {
     borderRadius: 12,
     opacity: 0.5,
-    position: 'absolute',
+    position: "absolute",
     bottom: 6,
     right: 6,
   },
