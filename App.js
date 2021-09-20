@@ -8,6 +8,8 @@ import UserScreen from './screens/UserScreen';
 import CartScreen from './screens/CartScreen';
 import DetailScreen from './screens/DetailScreen';
 import Toast from 'react-native-toast-message';
+import LoginScreen from './screens/LoginScreen';
+import RegisterScreen from './screens/RegisterScreen';
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -38,6 +40,20 @@ export default function App() {
         <Stack.Screen
           name="Detail"
           component={DetailScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="Login"
+          component={LoginScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="Register"
+          component={RegisterScreen}
           options={{
             headerShown: false,
           }}

@@ -11,6 +11,7 @@ import productImage from '../assets/stock.png';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/core';
 import Toast from 'react-native-toast-message';
+import { checkToken, login, register } from '../store';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -51,7 +52,7 @@ export default function ItemCard() {
             </View>
           </View>
           <TouchableHighlight
-            onPress={() => {
+            onPress={async () => {
               Toast.show({
                 type: 'success',
                 text1: 'Success',
