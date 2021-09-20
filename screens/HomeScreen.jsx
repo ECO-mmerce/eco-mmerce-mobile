@@ -1,5 +1,13 @@
+import { Ionicons } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
-import { FlatList, RefreshControl, StyleSheet, Text, View } from 'react-native';
+import {
+  FlatList,
+  RefreshControl,
+  StyleSheet,
+  Text,
+  TouchableHighlight,
+  View,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '../components/Header';
 import ItemCard from '../components/ItemCard';
@@ -7,7 +15,7 @@ import { fetchProducts } from '../store';
 
 const renderItem = ({ item }) => <ItemCard product={item} />;
 
-export default function HomeScreen() {
+export default function HomeScreen({ navigation }) {
   const [products, setProducts] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
 
@@ -38,6 +46,28 @@ export default function HomeScreen() {
           return item.id.toString();
         }}
       />
+      <TouchableHighlight
+        style={{
+          position: 'absolute',
+          bottom: 20,
+          right: 20,
+          borderRadius: 50,
+        }}
+        underlayColor="#333"
+        onPress={() => navigation.navigate('CheckProduct')}
+      >
+        <View
+          style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: 20,
+            borderRadius: 50,
+            backgroundColor: '#1efc95',
+          }}
+        >
+          <Ionicons name="ios-scan" size={18} color="#5c5c5c" />
+        </View>
+      </TouchableHighlight>
     </SafeAreaView>
   );
 }
@@ -47,5 +77,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#d8e1e3',
     flex: 1,
     paddingHorizontal: 12,
+    position: 'relative',
   },
 });

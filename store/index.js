@@ -170,22 +170,33 @@ export async function removeQty(id) {
 
 export async function addQty(id) {
   try {
-    const { data } = await serverAPI(`buyers/carts`, {
-      method: 'POST',
-      headers: {
-        access_token: await AsyncStorage.getItem(keys.access_token),
-      },
-      data: { ProductId: id },
-    });
+    const access_token = await AsyncStorage.getItem(keys.access_token);
 
-    await AsyncStorage.setItem(keys.cart_list, JSON.stringify(data));
+    if (access_token) {
+      const { data } = await serverAPI(`buyers/carts`, {
+        method: 'POST',
+        headers: {
+          access_token: await AsyncStorage.getItem(keys.access_token),
+        },
+        data: { ProductId: id },
+      });
 
-    Toast.show({
-      type: 'success',
-      text1: 'Success',
-      text2: 'Product added to your cart !',
-      position: 'bottom',
-    });
+      await AsyncStorage.setItem(keys.cart_list, JSON.stringify(data));
+
+      Toast.show({
+        type: 'success',
+        text1: 'Success',
+        text2: 'Product added to your cart !',
+        position: 'bottom',
+      });
+    } else {
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: 'You are not logged in',
+        position: 'bottom',
+      });
+    }
   } catch (err) {
     console.log(err.response.data);
 
