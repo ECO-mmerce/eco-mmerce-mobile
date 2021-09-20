@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import {
   Dimensions,
   Image,
@@ -6,26 +6,35 @@ import {
   Text,
   TouchableHighlight,
   View,
-} from "react-native";
-import { fetchCart, removeQty, addQty, checkOut } from "../store";
+} from 'react-native';
+import { fetchCart, removeQty, addQty, checkOut, checkToken } from '../store';
 
-const windowWidth = Dimensions.get("window").width;
+const windowWidth = Dimensions.get('window').width;
 
 export default function CartCard() {
   const [carts, setCarts] = useState([]);
+  const [isToken, setIsToken] = useState(false);
 
   useEffect(() => {
-    fetchCart().then((data) => {
-      setCarts(data);
+    checkToken().then((returnValue) => {
+      setIsToken(returnValue);
     });
   }, []);
+
+  useEffect(() => {
+    if (isToken) {
+      fetchCart().then((data) => {
+        setCarts(data);
+      });
+    }
+  }, [isToken]);
 
   const getTotalPrice = (products) => {
     let totalPrice = products.Product.qty * products.Product.price;
 
     return `Rp ${totalPrice
       .toString()
-      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")} , 00`;
+      .replace(/\B(?=(\d{3})+(?!\d))/g, ',')} , 00`;
   };
 
   return (
@@ -39,21 +48,21 @@ export default function CartCard() {
                 style={styles.productImage}
               />
               <View style={{ paddingLeft: 8 }}>
-                <Text style={{ fontWeight: "bold", fontSize: 16 }}>
+                <Text style={{ fontWeight: 'bold', fontSize: 16 }}>
                   {cart.Product.name}
                 </Text>
-                <Text style={{ color: "grey" }}>
+                <Text style={{ color: 'grey' }}>
                   Rp
                   {cart.Product.price
                     .toString()
-                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                   , 00
                 </Text>
-                <View style={{ flex: 1, justifyContent: "flex-end" }}>
+                <View style={{ flex: 1, justifyContent: 'flex-end' }}>
                   <Text
                     style={{
-                      color: "#20a869",
-                      fontWeight: "bold",
+                      color: '#20a869',
+                      fontWeight: 'bold',
                       fontSize: 16,
                     }}
                   >
@@ -63,7 +72,7 @@ export default function CartCard() {
               </View>
               <View style={styles.qtyContainer}>
                 <TouchableHighlight
-                  underlayColor={"#bfbfbf80"}
+                  underlayColor={'#bfbfbf80'}
                   style={{
                     borderRadius: 4,
                   }}
@@ -79,8 +88,8 @@ export default function CartCard() {
                 >
                   <Text
                     style={{
-                      color: "#20a869",
-                      fontWeight: "bold",
+                      color: '#20a869',
+                      fontWeight: 'bold',
                       fontSize: 20,
                       paddingHorizontal: 6,
                     }}
@@ -91,15 +100,15 @@ export default function CartCard() {
                 <Text
                   style={{
                     paddingHorizontal: 10,
-                    textAlign: "center",
+                    textAlign: 'center',
                     borderRadius: 4,
-                    color: "#888",
+                    color: '#888',
                   }}
                 >
                   {cart.Product.qty}
                 </Text>
                 <TouchableHighlight
-                  underlayColor={"#bfbfbf80"}
+                  underlayColor={'#bfbfbf80'}
                   style={{
                     borderRadius: 4,
                   }}
@@ -115,8 +124,8 @@ export default function CartCard() {
                 >
                   <Text
                     style={{
-                      color: "#20a869",
-                      fontWeight: "bold",
+                      color: '#20a869',
+                      fontWeight: 'bold',
                       fontSize: 20,
                       paddingHorizontal: 6,
                     }}
@@ -130,10 +139,10 @@ export default function CartCard() {
         })}
       </View>
       <TouchableHighlight
-        underlayColor={"#bfbfbf80"}
+        underlayColor={'#bfbfbf80'}
         style={{
           borderRadius: 4,
-          backgroundColor: "#0eb511",
+          backgroundColor: '#0eb511',
           marginVertical: 20,
         }}
         onPress={() =>
@@ -148,8 +157,8 @@ export default function CartCard() {
       >
         <Text
           style={{
-            color: "white",
-            fontWeight: "bold",
+            color: 'white',
+            fontWeight: 'bold',
             fontSize: 20,
             padding: 8,
           }}
@@ -163,17 +172,17 @@ export default function CartCard() {
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "row",
+    flexDirection: 'row',
     padding: 6,
     borderRadius: 12,
-    backgroundColor: "#f0fffb",
-    position: "relative",
+    backgroundColor: '#f0fffb',
+    position: 'relative',
     marginBottom: 8,
   },
   qtyContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    position: "absolute",
+    flexDirection: 'row',
+    alignItems: 'center',
+    position: 'absolute',
     right: 6,
     bottom: 6,
   },
