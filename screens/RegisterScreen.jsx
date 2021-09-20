@@ -51,12 +51,9 @@ export default function RegisterScreen() {
 
       const filename = uri.split('/').pop();
       const fileType = filename.split('.').pop();
-      console.log(fileType);
       setPicture({ uri, name: filename, type: `${type}/${fileType}` });
     }
   };
-
-  console.log(picture, 'ini pictureeeeeee \n\n\n\n\n');
 
   return (
     <SafeAreaView style={styles.container}>

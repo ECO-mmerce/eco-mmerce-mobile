@@ -1,57 +1,44 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   Text,
   View,
   Button,
   TouchableHighlight,
-} from "react-native";
-import Logo from "./Logo";
-import { Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/core";
-import { checkToken, logout } from "../store";
+} from 'react-native';
+import Logo from './Logo';
+import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/core';
+import { checkToken, logout } from '../store';
 
 export default function Header() {
-  const [isToken, setIsToken] = useState(true);
+  // const [isToken, setIsToken] = useState(false);
 
-  useEffect(() => {
-    checkToken().then((data) => {
-      setIsToken(data);
-    });
-  }, []);
+  // useEffect(() => {
+  //   checkToken().then((data) => {
+  //     setIsToken(data);
+  //   });
+  // }, []);
 
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <Logo />
-      {isToken ? (
-        <TouchableHighlight
-          onPress={() => {
-            navigation.navigate("Cart");
-          }}
-          underlayColor="#1da365"
-          style={styles.hightlight}
-        >
-          <View style={styles.headerBtn}>
-            <Ionicons name="ios-cart-outline" size={24} color="black" />
-          </View>
-        </TouchableHighlight>
-      ) : (
-        <TouchableHighlight
-          onPress={() => {
-            navigation.navigate("User");
-          }}
-          underlayColor="#1da365"
-          style={styles.hightlight}
-        >
-          <View style={styles.headerBtn}>
-            <Ionicons name="ios-cart-outline" size={24} color="black" />
-          </View>
-        </TouchableHighlight>
-      )}
       <TouchableHighlight
         onPress={() => {
-          navigation.navigate("User");
+          navigation.navigate('Cart');
+        }}
+        underlayColor="#1da365"
+        style={styles.hightlight}
+      >
+        <View style={styles.headerBtn}>
+          <Ionicons name="ios-cart-outline" size={24} color="black" />
+        </View>
+      </TouchableHighlight>
+
+      <TouchableHighlight
+        onPress={() => {
+          navigation.navigate('User');
         }}
         underlayColor="#1da365"
         style={styles.hightlight}
@@ -66,8 +53,8 @@ export default function Header() {
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   headerBtn: {
     padding: 12,

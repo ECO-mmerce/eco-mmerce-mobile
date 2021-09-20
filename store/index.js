@@ -128,7 +128,7 @@ export async function fetchCart() {
 
     return JSON.parse(value);
   } catch (err) {
-    console.log(err);
+    console.log(err, 'error fetch cart');
 
     Toast.show({
       type: 'error',
@@ -213,7 +213,7 @@ export async function fetchHistory() {
 
     return JSON.parse(value);
   } catch (err) {
-    console.log(err);
+    console.log(err, 'error fetch history ------ \n\n\n\n');
 
     Toast.show({
       type: 'error',
