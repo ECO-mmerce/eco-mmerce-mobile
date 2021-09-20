@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/core';
 import React, { useEffect, useState } from 'react';
 import {
   Dimensions,
@@ -14,6 +15,8 @@ const windowWidth = Dimensions.get('window').width;
 export default function CartCard() {
   const [carts, setCarts] = useState([]);
   const [isToken, setIsToken] = useState(false);
+
+  const navigation = useNavigation();
 
   useEffect(() => {
     checkToken().then((returnValue) => {
@@ -145,14 +148,16 @@ export default function CartCard() {
           backgroundColor: '#0eb511',
           marginVertical: 20,
         }}
-        onPress={() =>
-          checkOut()
-            .then(() => {
-              return fetchCart();
+        onPress={
+          () =>
+            checkOut().then((returnValue) => {
+              console.log(returnValue);
+              navigation.replace('Midtrans', returnValue.redirect_url);
+              // return fetchCart();
             })
-            .then((carts) => {
-              setCarts(carts);
-            })
+          // .then((carts) => {
+          //   setCarts(carts);
+          // })
         }
       >
         <Text
