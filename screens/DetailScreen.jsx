@@ -127,7 +127,7 @@ export default function DetailScreen({ route, navigation }) {
             borderRadius: 4,
           }}
           onPress={() => {
-            navigation.replace("Chat");
+            navigation.navigate("Chat");
           }}
         >
           <View style={styles.chatTouch}>
