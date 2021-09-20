@@ -1,14 +1,25 @@
-import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
-import logo from '../assets/logo.png';
-import { Dimensions } from 'react-native';
+import React from "react";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TouchableHighlight,
+} from "react-native";
+import logo from "../assets/logo.png";
+import { Dimensions } from "react-native";
+import { useNavigation } from "@react-navigation/core";
 
-const windowWidth = Dimensions.get('window').width;
+const windowWidth = Dimensions.get("window").width;
 
 export default function Logo() {
+  const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
-      <Image source={logo} style={styles.image} />
+      <TouchableHighlight onPress={() => navigation.navigate("Home")}>
+        <Image source={logo} style={styles.image} />
+      </TouchableHighlight>
     </View>
   );
 }
