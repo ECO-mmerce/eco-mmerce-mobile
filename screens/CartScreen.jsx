@@ -6,11 +6,11 @@ import Header from '../components/Header';
 import { checkOut, checkToken } from '../store';
 
 export default function CartScreen({ navigation }) {
-  useEffect(() => {
-    checkToken().then((returnValue) => {
-      if (!returnValue) navigation.replace('User');
-    });
-  }, []);
+  // useEffect(() => {
+  //   checkToken().then((returnValue) => {
+  //     if (!returnValue) navigation.replace('Login');
+  //   });
+  // }, []);
 
   return (
     <SafeAreaView style={styles.container}>
