@@ -226,21 +226,22 @@ export async function fetchHistory() {
 
 export async function checkOut() {
   try {
-    const response = await serverAPI('/buyers/carts/checkout', {
+    const { data } = await serverAPI('/buyers/carts/checkout', {
       method: 'POST',
       headers: {
         access_token: await AsyncStorage.getItem(keys.access_token),
       },
     });
 
-    await AsyncStorage.setItem(keys.cart_list, JSON.stringify([]));
+    return data;
+    // await AsyncStorage.setItem(keys.cart_list, JSON.stringify([]));
 
-    Toast.show({
-      type: 'success',
-      text1: 'Success',
-      text2: 'Checkout Success !',
-      position: 'bottom',
-    });
+    // Toast.show({
+    //   type: 'success',
+    //   text1: 'Success',
+    //   text2: 'Checkout Success !',
+    //   position: 'bottom',
+    // });
   } catch (err) {
     console.log(err);
     Toast.show({

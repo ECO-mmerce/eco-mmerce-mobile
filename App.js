@@ -1,16 +1,17 @@
-import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import HomeScreen from "./screens/HomeScreen";
-import UserScreen from "./screens/UserScreen";
-import CartScreen from "./screens/CartScreen";
-import DetailScreen from "./screens/DetailScreen";
-import Toast from "react-native-toast-message";
-import LoginScreen from "./screens/LoginScreen";
-import RegisterScreen from "./screens/RegisterScreen";
-import ChatScreen from "./screens/ChatScreen";
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import HomeScreen from './screens/HomeScreen';
+import UserScreen from './screens/UserScreen';
+import CartScreen from './screens/CartScreen';
+import DetailScreen from './screens/DetailScreen';
+import Toast from 'react-native-toast-message';
+import LoginScreen from './screens/LoginScreen';
+import RegisterScreen from './screens/RegisterScreen';
+import ChatScreen from './screens/ChatScreen';
+import MidtransScreen from './screens/MidtransScreen';
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -66,6 +67,13 @@ export default function App() {
             headerShown: false,
           }}
         />
+        <Stack.Screen
+          name="Midtrans"
+          component={MidtransScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
       </Stack.Navigator>
       <Toast ref={(ref) => Toast.setRef(ref)} />
     </NavigationContainer>
@@ -75,8 +83,8 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
