@@ -110,7 +110,7 @@ export async function checkToken() {
 
     return access_token ? true : false;
   } catch (err) {
-    console.log(err);
+    console.log(err, `INI DIMANA`);
   }
 }
 
@@ -187,12 +187,12 @@ export async function addQty(id) {
       position: "bottom",
     });
   } catch (err) {
-    console.log(err);
+    console.log(err.response.data);
 
     Toast.show({
       type: "error",
       text1: "Error",
-      text2: err.response.data.message,
+      text2: err.response.data,
       position: "bottom",
     });
   }
@@ -232,7 +232,6 @@ export async function checkOut() {
         access_token: await AsyncStorage.getItem(keys.access_token),
       },
     });
-    console.log(response);
 
     await AsyncStorage.setItem(keys.cart_list, JSON.stringify([]));
 
@@ -270,7 +269,7 @@ export async function logout() {
 
 export async function fetchProducts() {
   try {
-    const { data } = await serverAPI.get(baseURL + '/buyers/products');
+    const { data } = await serverAPI.get(baseURL + "/buyers/products");
     return data;
   } catch (err) {
     console.log(err);
@@ -279,7 +278,7 @@ export async function fetchProducts() {
 
 export async function fetchProductDetail(id) {
   try {
-    const { data } = await serverAPI.get(baseURL + '/buyers/products/' + id);
+    const { data } = await serverAPI.get(baseURL + "/buyers/products/" + id);
     return data;
   } catch (err) {
     console.log(err);
