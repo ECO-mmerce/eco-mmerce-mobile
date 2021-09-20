@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   Image,
@@ -11,12 +11,17 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '../components/Header';
 import productImage from '../assets/stock.png';
-import { useNavigation } from '@react-navigation/core';
 import { Ionicons } from '@expo/vector-icons';
 import Toast from 'react-native-toast-message';
+import { fetchProductDetail } from '../store';
 
-export default function DetailScreen() {
-  const navigation = useNavigation();
+export default function DetailScreen({ route, navigation }) {
+  const [productDetail, setProductDetail] = useState({});
+  useEffect(() => {
+    fetchProductDetail(route.params).then((returnValue) =>
+      setProductDetail(returnValue)
+    );
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -34,35 +39,85 @@ export default function DetailScreen() {
         </View>
       </TouchableHighlight>
       <ScrollView style={styles.content}>
-        <Image style={styles.productImage} source={productImage} />
-        <Text style={styles.productPrice}>Rp 20.000.000</Text>
-        <Text style={styles.productBrand}>Brand Name</Text>
-        <Text style={styles.productName}>Product Name</Text>
-        <Text style={styles.productCategory}>Category</Text>
-        <Text>By: Seller Name</Text>
-        <Text style={styles.productSubTitle}>Description</Text>
-        <Text>
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dicta, unde!
-          Itaque, esse ea praesentium libero iure cum unde sapiente numquam enim
-          cumque, odit animi inventore assumenda quae totam eligendi nobis.
+        <Image
+          style={styles.productImage}
+          source={{ uri: productDetail.picture }}
+        />
+        <Text style={styles.productPrice}>
+          Rp{' '}
+          {productDetail.price
+            ?.toString()
+            .replace(/\B(?=(\d{3})+(?!\d))/g, '.')}
         </Text>
-        <Text style={styles.productSubTitle}>Ingredients</Text>
-        <Text>- Ingredient 1</Text>
-        <Text>- Ingredient 2</Text>
-        <Text>- Ingredient 3</Text>
-        <Text>- Ingredient 3</Text>
-        <Text>- Ingredient 3</Text>
-        <Text>- Ingredient 3</Text>
-        <Text>- Ingredient 3</Text>
-        <Text>- Ingredient 3</Text>
-        <Text>- Ingredient 3</Text>
-        <Text>- Ingredient 3</Text>
+        <View
+          style={{
+            backgroundColor: '#edf2f0',
+            padding: 12,
+            borderRadius: 12,
+            marginTop: 12,
+          }}
+        >
+          <Text style={styles.productBrand}>
+            {productDetail.Brands?.map((brand) => brand.name)}
+          </Text>
+          <Text style={styles.productName}>{productDetail.name}</Text>
+          <Text style={styles.productCategory}>
+            {productDetail.Category?.name}
+          </Text>
+          <Text
+            style={{ fontWeight: 'bold', color: '#20a869', marginBottom: 12 }}
+          >
+            By:{' '}
+            {productDetail.UsersProducts?.map((seller) => {
+              return `${seller.User.firstName} ${seller.User.lastName}`;
+            })}
+          </Text>
+          <Text style={{ color: '#404040' }}>
+            Weight:{' '}
+            {productDetail.weight < 1 ? '1 KG' : productDetail.weight + ' KG'}
+          </Text>
+          <Text style={{ color: '#404040' }}>
+            Stock: {productDetail.stock ? productDetail.stock : 'Out of stock'}
+          </Text>
+        </View>
+        <View
+          style={{
+            padding: 12,
+            marginTop: 12,
+          }}
+        >
+          <Text style={{ ...styles.productSubTitle, marginTop: 0 }}>
+            Description
+          </Text>
+          <Text style={{ color: '#404040' }}>{productDetail.description}</Text>
+          <Text style={styles.productSubTitle}>Ingredients</Text>
+          {productDetail.ingridient?.map((ingredient, i) => (
+            <Text style={{ color: '#404040' }} key={'ingredient-list-' + i}>
+              - {ingredient}
+            </Text>
+          ))}
+          <Text style={{ ...styles.productSubTitle, color: 'red' }}>
+            Harmful Ingredients
+          </Text>
+          {productDetail.harmfulIngidient?.length ? (
+            productDetail.harmfulIngidient?.map((ingredient, i) => (
+              <Text
+                style={{ color: '#404040' }}
+                key={'harmful-ingredient-list-' + i}
+              >
+                - {ingredient}
+              </Text>
+            ))
+          ) : (
+            <Text style={{ color: '#404040' }}>None</Text>
+          )}
+        </View>
       </ScrollView>
       <View style={styles.bottomContainer}>
         <View style={{ flex: 1, marginRight: 8 }}>
           <Button
             title="Add to cart"
-            color="#20a869"
+            color={Number(productDetail.status) ? '#ffc273' : '#20a869'}
             onPress={() => {
               Toast.show({
                 type: 'success',
@@ -142,11 +197,13 @@ const styles = StyleSheet.create({
   productName: {
     fontWeight: 'bold',
     fontSize: 26,
+    color: '#525252',
   },
   productPrice: {
     fontWeight: 'bold',
     fontSize: 26,
     textAlign: 'center',
+    color: '#404040',
   },
   productCategory: {
     color: '#707070',
@@ -154,6 +211,7 @@ const styles = StyleSheet.create({
   productSubTitle: {
     fontWeight: 'bold',
     fontSize: 16,
+    color: '#404040',
     marginTop: 12,
   },
   chatTouch: {

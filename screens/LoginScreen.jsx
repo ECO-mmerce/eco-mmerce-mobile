@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import {
+  Dimensions,
+  Image,
   StyleSheet,
   Text,
   TextInput,
@@ -12,6 +14,10 @@ import Header from '../components/Header';
 import { login } from '../store';
 import { useNavigation } from '@react-navigation/core';
 
+import logoCircle from '../assets/logo-circle.png';
+
+const windowWidth = Dimensions.get('window').width;
+
 export default function LoginScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -21,6 +27,9 @@ export default function LoginScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <Header />
+      <View style={{ width: '100%', alignItems: 'center' }}>
+        <Image style={styles.logo} source={logoCircle} />
+      </View>
       <View style={styles.formContainer}>
         <View style={styles.background}>
           <Text
@@ -112,10 +121,14 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 12,
   },
+  logo: {
+    width: windowWidth * 0.5,
+    height: windowWidth * 0.5,
+  },
   formContainer: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
   },
   background: {
     backgroundColor: 'white',
