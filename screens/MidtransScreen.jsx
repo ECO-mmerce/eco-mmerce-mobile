@@ -3,12 +3,22 @@ import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { WebView } from 'react-native-webview';
 
-export default function MidtransScreen({ route }) {
+export default function MidtransScreen({ route, navigation }) {
   console.log(route.params);
 
   return (
     <SafeAreaView style={styles.container}>
-      <WebView source={{ uri: route.params }} />
+      <WebView
+        onNavigationStateChange={(navState) => {
+          console.log(navState);
+          if (navState.url.includes(`${route.params}#/success`)) {
+            setTimeout(() => {
+              navigation.replace('Home');
+            }, 2000);
+          }
+        }}
+        source={{ uri: route.params }}
+      />
     </SafeAreaView>
   );
 }
