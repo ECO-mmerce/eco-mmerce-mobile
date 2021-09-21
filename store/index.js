@@ -375,3 +375,19 @@ export async function getUserData() {
     console.log(err);
   }
 }
+
+export async function postProductImage(payload) {
+  try {
+    const formData = new FormData();
+    formData.append('ingredients', payload);
+
+    const { data } = await serverAPI.post(
+      baseURL + '/buyers/checkIngredients',
+      formData
+    );
+
+    return data;
+  } catch (err) {
+    console.log(err.response.data);
+  }
+}
