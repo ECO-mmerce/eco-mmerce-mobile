@@ -13,7 +13,7 @@ export default function MidtransScreen({ route, navigation }) {
           console.log(navState);
           if (navState.url.includes(`${route.params}#/success`)) {
             setTimeout(() => {
-              navigation.replace('Home');
+              navigation.replace('User');
             }, 2000);
           }
         }}

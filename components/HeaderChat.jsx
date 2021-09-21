@@ -9,7 +9,7 @@ import {
   View,
 } from 'react-native';
 
-export default function HeaderChat({ name }) {
+export default function HeaderChat({ name, picture }) {
   const navigation = useNavigation();
 
   return (
@@ -29,7 +29,7 @@ export default function HeaderChat({ name }) {
       <View style={{ flex: 1, alignItems: 'center' }}>
         <Image
           source={{
-            uri: 'https://st.depositphotos.com/1597387/1984/i/950/depositphotos_19841901-stock-photo-asian-young-business-man-close.jpg',
+            uri: picture,
           }}
           style={{ width: 40, height: 40, borderRadius: 20, marginBottom: 4 }}
         />

@@ -43,6 +43,25 @@ export default function CartCard() {
   return (
     <>
       <View style={{ flex: 1 }}>
+        {carts.length ? null : (
+          <View
+            style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
+          >
+            <Text style={{ textAlign: 'center', color: '#555', fontSize: 18 }}>
+              Your cart is empty
+            </Text>
+            <Text
+              style={{
+                textAlign: 'center',
+                color: '#555',
+                fontSize: 18,
+                fontWeight: 'bold',
+              }}
+            >
+              Go shopping now, EcoHippies!
+            </Text>
+          </View>
+        )}
         {carts.map((cart) => {
           return (
             <View style={styles.container} key={cart.Product.id}>
@@ -141,36 +160,38 @@ export default function CartCard() {
           );
         })}
       </View>
-      <TouchableHighlight
-        underlayColor={'#bfbfbf80'}
-        style={{
-          borderRadius: 4,
-          backgroundColor: '#0eb511',
-          marginVertical: 20,
-        }}
-        onPress={
-          () =>
-            checkOut().then((returnValue) => {
-              console.log(returnValue);
-              navigation.replace('Midtrans', returnValue.redirect_url);
-              // return fetchCart();
-            })
-          // .then((carts) => {
-          //   setCarts(carts);
-          // })
-        }
-      >
-        <Text
+      {carts.length ? (
+        <TouchableHighlight
+          underlayColor={'#bfbfbf80'}
           style={{
-            color: 'white',
-            fontWeight: 'bold',
-            fontSize: 20,
-            padding: 8,
+            borderRadius: 4,
+            backgroundColor: '#0eb511',
+            marginVertical: 20,
           }}
+          onPress={
+            () =>
+              checkOut().then((returnValue) => {
+                console.log(returnValue);
+                navigation.replace('Midtrans', returnValue.redirect_url);
+                // return fetchCart();
+              })
+            // .then((carts) => {
+            //   setCarts(carts);
+            // })
+          }
         >
-          Checkout
-        </Text>
-      </TouchableHighlight>
+          <Text
+            style={{
+              color: 'white',
+              fontWeight: 'bold',
+              fontSize: 20,
+              padding: 8,
+            }}
+          >
+            Checkout
+          </Text>
+        </TouchableHighlight>
+      ) : null}
     </>
   );
 }

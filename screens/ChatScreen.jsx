@@ -72,6 +72,7 @@ export default function ChatScreen({ route }) {
   return (
     <SafeAreaView style={styles.container}>
       <HeaderChat
+        picture={route.params[0].User.picture}
         name={`${route.params[0].User.firstName} ${route.params[0].User.lastName}`}
       />
       <ScrollView
@@ -82,7 +83,13 @@ export default function ChatScreen({ route }) {
         style={styles.scrollContainer}
       >
         {messageList.map((message, i) => {
-          return <ChatBubble key={'chat-bubble-' + i} message={message} />;
+          return (
+            <ChatBubble
+              key={'chat-bubble-' + i}
+              sellerPicture={route.params[0].User.picture}
+              message={message}
+            />
+          );
         })}
       </ScrollView>
       <View style={{ flexDirection: 'row', backgroundColor: 'white' }}>

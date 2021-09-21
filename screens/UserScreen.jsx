@@ -49,8 +49,8 @@ export default function UserScreen() {
         <View style={styles.spaceContainer}>
           <Text style={styles.subTitle}>My Orders</Text>
           <ScrollView>
-            {history.map((data) => {
-              return <OrderCard key={data.Product.id} data={data} />;
+            {history.map((data, i) => {
+              return <OrderCard key={'order-history-' + i} data={data} />;
             })}
           </ScrollView>
         </View>
