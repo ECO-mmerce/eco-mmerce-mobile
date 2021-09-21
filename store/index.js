@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-toast-message';
 import axios from 'axios';
 
-const baseURL = 'http://192.168.100.49:4000';
+const baseURL = 'http://ecommerce.marcotiger.my.id';
 
 const serverAPI = axios.create({
   baseURL,
