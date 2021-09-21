@@ -129,7 +129,7 @@ export default function DetailScreen({ route, navigation }) {
           onPress={() => {
             checkToken().then((returnValue) => {
               if (returnValue) {
-                navigation.navigate('Chat');
+                navigation.navigate('Chat', productDetail.UsersProducts);
               } else {
                 navigation.navigate('Login');
               }

@@ -1,30 +1,42 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
+import { getUserData } from '../store';
 
-export default function ChatBubble() {
-  const random = Math.floor(Math.random() * 2);
+export default function ChatBubble({ message }) {
+  const [userData, setUserData] = useState({});
+
+  useEffect(() => {
+    getUserData().then((returnValue) => {
+      setUserData(returnValue);
+    });
+  }, []);
+
+  const isName =
+    message.fullName.trim() ===
+    `${userData.firstName} ${userData.lastName}`.trim();
+
   return (
     <View
       style={{
-        flexDirection: random ? 'row' : 'row-reverse',
+        flexDirection: isName ? 'row-reverse' : 'row',
         alignItems: 'center',
         marginBottom: 18,
       }}
     >
       <Image
         source={{
-          uri: 'https://st.depositphotos.com/1597387/1984/i/950/depositphotos_19841901-stock-photo-asian-young-business-man-close.jpg',
+          uri: userData.picture,
         }}
         style={{ width: 40, height: 40, borderRadius: 20, marginBottom: 4 }}
       />
       <View
         style={{
-          alignItems: random ? 'flex-start' : 'flex-end',
+          alignItems: isName ? 'flex-end' : 'flex-start',
           marginHorizontal: 12,
         }}
       >
-        <Text style={{ fontWeight: 'bold' }}>Sender Name</Text>
-        <Text>Chat message, halo gans</Text>
+        <Text style={{ fontWeight: 'bold' }}>{message.fullName}</Text>
+        <Text>{message.message}</Text>
       </View>
     </View>
   );

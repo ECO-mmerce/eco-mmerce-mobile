@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
@@ -11,19 +11,79 @@ import {
   TextInput,
   Button,
 } from 'react-native';
+
 import HeaderChat from '../components/HeaderChat';
 import ChatBubble from '../components/ChatBubble';
+import {
+  fetchChats,
+  getMessageList,
+  getUserData,
+  pushMessageToList,
+} from '../store';
+import SocketContext from '../config/socket';
 
-export default function ChatScreen() {
+export default function ChatScreen({ route }) {
   const [chat, setChat] = useState('');
+  const [messageList, setMessageList] = useState([]);
+  const scrollViewRef = useRef(null);
+
+  const socket = React.useContext(SocketContext);
+
+  const handleSocketMessage = (message) => {
+    console.log(
+      '-------------Message received from socket server ------------------'
+    );
+
+    pushMessageToList(message).then((returnValue) => {
+      setMessageList(returnValue);
+    });
+  };
+
+  useEffect(() => {
+    console.log('-------Component Mounted-----------');
+
+    // Fetch messages
+    fetchChats(route.params[0].User.id)
+      .then(() => {
+        console.log('-----------Message History Received------------');
+
+        return getMessageList();
+      })
+      .then((returnValue) => {
+        console.log('------------ Initializing local state ------------');
+        setMessageList(returnValue);
+      });
+
+    // Join to socket room
+    getUserData().then((returnValue) => {
+      console.log('---------- Joining socket room ---------------');
+      socket.emit('joinRoom', {
+        sellerId: route.params[0].User.id,
+        buyerId: returnValue.id,
+      });
+    });
+
+    // Listen to server event
+    socket
+      .off('message', handleSocketMessage)
+      .on('message', handleSocketMessage);
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
-      <HeaderChat />
-      <ScrollView style={styles.scrollContainer}>
-        <ChatBubble />
-        <ChatBubble />
-        <ChatBubble />
+      <HeaderChat
+        name={`${route.params[0].User.firstName} ${route.params[0].User.lastName}`}
+      />
+      <ScrollView
+        ref={scrollViewRef}
+        onContentSizeChange={() => {
+          scrollViewRef.current.scrollToEnd({ animated: true });
+        }}
+        style={styles.scrollContainer}
+      >
+        {messageList.map((message, i) => {
+          return <ChatBubble key={'chat-bubble-' + i} message={message} />;
+        })}
       </ScrollView>
       <View style={{ flexDirection: 'row', backgroundColor: 'white' }}>
         <TextInput
@@ -31,14 +91,49 @@ export default function ChatScreen() {
           style={{ flex: 1, fontSize: 20, padding: 12 }}
           value={chat}
           onChangeText={setChat}
+          onSubmitEditing={() => {
+            if (chat) {
+              getUserData().then((returnValue) => {
+                socket.emit('chat', {
+                  message: {
+                    BuyerId: returnValue.id,
+                    SellerId: route.params[0].User.id,
+                    message: chat,
+                    fullName:
+                      returnValue.firstName + ' ' + returnValue.lastName,
+                  },
+                });
+                setChat('');
+              });
+            }
+          }}
         />
-        <TouchableHighlight>
-          <View
-            style={{
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: 8,
+        <View
+          style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: 8,
+          }}
+        >
+          <TouchableHighlight
+            style={{ borderRadius: 50 }}
+            onPress={() => {
+              if (chat) {
+                getUserData().then((returnValue) => {
+                  socket.emit('chat', {
+                    message: {
+                      BuyerId: returnValue.id,
+                      SellerId: route.params[0].User.id,
+                      message: chat,
+                      fullName:
+                        returnValue.firstName + ' ' + returnValue.lastName,
+                    },
+                  });
+                  setChat('');
+                });
+              }
             }}
+            underlayColor="#333"
           >
             <View
               style={{
@@ -51,8 +146,8 @@ export default function ChatScreen() {
             >
               <Ionicons name="ios-send" size={24} color="white" />
             </View>
-          </View>
-        </TouchableHighlight>
+          </TouchableHighlight>
+        </View>
       </View>
     </SafeAreaView>
   );

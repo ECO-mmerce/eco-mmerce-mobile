@@ -8,10 +8,8 @@ import {
   TouchableHighlight,
   View,
 } from 'react-native';
-import { checkToken } from '../store';
-import Logo from './Logo';
 
-export default function HeaderChat() {
+export default function HeaderChat({ name }) {
   const navigation = useNavigation();
 
   return (
@@ -25,7 +23,7 @@ export default function HeaderChat() {
       >
         <View style={styles.headerBtn}>
           <Ionicons name="ios-chevron-back" size={24} color="#424242" />
-          <Text style={{ marginLeft: 6 }}>Back</Text>
+          <Text style={{ marginLeft: 6 }}>Go Back</Text>
         </View>
       </TouchableHighlight>
       <View style={{ flex: 1, alignItems: 'center' }}>
@@ -35,7 +33,7 @@ export default function HeaderChat() {
           }}
           style={{ width: 40, height: 40, borderRadius: 20, marginBottom: 4 }}
         />
-        <Text style={{ fontWeight: 'bold', color: '#444444' }}>User Name</Text>
+        <Text style={{ fontWeight: 'bold', color: '#444444' }}>{name}</Text>
       </View>
       <View style={{ flex: 1 }}></View>
     </View>

@@ -13,6 +13,7 @@ const keys = {
   access_token: '@access_token',
   cart_list: '@cart_list',
   history_list: '@history_list',
+  message_list: '@message_list',
 };
 
 export async function login(email, password, role) {
@@ -292,6 +293,84 @@ export async function fetchProductDetail(id) {
   try {
     const { data } = await serverAPI.get(baseURL + '/buyers/products/' + id);
     return data;
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export async function fetchChats(chatWithId) {
+  try {
+    console.log('----------Fetching Message History---------');
+    const access_token = await AsyncStorage.getItem(keys.access_token);
+
+    if (access_token) {
+      const { data } = await serverAPI.get(baseURL + '/chats/' + chatWithId, {
+        headers: {
+          access_token,
+        },
+      });
+
+      await AsyncStorage.setItem(keys.message_list, JSON.stringify(data));
+    } else {
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: 'You are not logged in',
+        position: 'bottom',
+      });
+    }
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export async function getMessageList() {
+  try {
+    const message_list = await AsyncStorage.getItem(keys.message_list);
+
+    if (message_list) {
+      const parsed_message_list = JSON.parse(message_list);
+      return parsed_message_list;
+    } else {
+      return [];
+    }
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export async function pushMessageToList(msgPayload) {
+  try {
+    const message_list = await AsyncStorage.getItem(keys.message_list);
+    let parsed_message_list;
+
+    if (message_list) {
+      parsed_message_list = JSON.parse(message_list);
+      parsed_message_list.push(msgPayload);
+      await AsyncStorage.setItem(
+        keys.message_list,
+        JSON.stringify(parsed_message_list)
+      );
+    } else {
+      parsed_message_list = [msgPayload];
+      await AsyncStorage.setItem(
+        keys.message_list,
+        JSON.stringify(arsed_message_list)
+      );
+    }
+
+    return parsed_message_list;
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export async function getUserData() {
+  try {
+    const user_data = await AsyncStorage.getItem(keys.user_data);
+    const user_data_parsed = JSON.parse(user_data);
+
+    return user_data_parsed;
   } catch (err) {
     console.log(err);
   }
