@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 import {
   Dimensions,
   Image,
+  RefreshControl,
+  ScrollView,
   StyleSheet,
   Text,
   TouchableHighlight,
@@ -15,6 +17,7 @@ const windowWidth = Dimensions.get('window').width;
 export default function CartCard() {
   const [carts, setCarts] = useState([]);
   const [isToken, setIsToken] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
   const navigation = useNavigation();
 
@@ -30,6 +33,10 @@ export default function CartCard() {
         setCarts(data);
       });
     }
+
+    return () => {
+      setIsToken(false);
+    };
   }, [isToken]);
 
   const getTotalPrice = (products) => {
@@ -62,103 +69,119 @@ export default function CartCard() {
             </Text>
           </View>
         )}
-        {carts.map((cart) => {
-          return (
-            <View style={styles.container} key={cart.Product.id}>
-              <Image
-                source={{ uri: cart.Product.picture }}
-                style={styles.productImage}
-              />
-              <View style={{ paddingLeft: 8 }}>
-                <Text style={{ fontWeight: 'bold', fontSize: 16 }}>
-                  {cart.Product.name}
-                </Text>
-                <Text style={{ color: 'grey' }}>
-                  Rp
-                  {cart.Product.price
-                    .toString()
-                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                  , 00
-                </Text>
-                <View style={{ flex: 1, justifyContent: 'flex-end' }}>
-                  <Text
+        <ScrollView
+          refreshControl={
+            <RefreshControl
+              colors={['#52d9a8']}
+              refreshing={refreshing}
+              onRefresh={() => {
+                setRefreshing(true);
+                fetchCart().then((data) => {
+                  setCarts(data);
+                  setRefreshing(false);
+                });
+              }}
+            />
+          }
+        >
+          {carts.map((cart) => {
+            return (
+              <View style={styles.container} key={cart.Product.id}>
+                <Image
+                  source={{ uri: cart.Product.picture }}
+                  style={styles.productImage}
+                />
+                <View style={{ paddingLeft: 8, width: '80%' }}>
+                  <Text style={{ fontWeight: 'bold', fontSize: 16 }}>
+                    {cart.Product.name}
+                  </Text>
+                  <Text style={{ color: 'grey' }}>
+                    Rp
+                    {cart.Product.price
+                      .toString()
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                    , 00
+                  </Text>
+                  <View style={{ flex: 1, justifyContent: 'flex-end' }}>
+                    <Text
+                      style={{
+                        color: '#20a869',
+                        fontWeight: 'bold',
+                        fontSize: 16,
+                      }}
+                    >
+                      Total: {getTotalPrice(cart)}
+                    </Text>
+                  </View>
+                </View>
+                <View style={styles.qtyContainer}>
+                  <TouchableHighlight
+                    underlayColor={'#bfbfbf80'}
                     style={{
-                      color: '#20a869',
-                      fontWeight: 'bold',
-                      fontSize: 16,
+                      borderRadius: 4,
+                    }}
+                    onPress={() => {
+                      removeQty(cart.Product.id)
+                        .then(() => {
+                          return fetchCart();
+                        })
+                        .then((carts) => {
+                          setCarts(carts);
+                        });
                     }}
                   >
-                    Total: {getTotalPrice(cart)}
+                    <Text
+                      style={{
+                        color: '#20a869',
+                        fontWeight: 'bold',
+                        fontSize: 20,
+                        paddingHorizontal: 6,
+                      }}
+                    >
+                      -
+                    </Text>
+                  </TouchableHighlight>
+                  <Text
+                    style={{
+                      paddingHorizontal: 10,
+                      textAlign: 'center',
+                      borderRadius: 4,
+                      color: '#888',
+                    }}
+                  >
+                    {cart.Product.qty}
                   </Text>
+                  <TouchableHighlight
+                    underlayColor={'#bfbfbf80'}
+                    style={{
+                      borderRadius: 4,
+                    }}
+                    onPress={() => {
+                      addQty(cart.Product.id)
+                        .then(() => {
+                          return fetchCart();
+                        })
+                        .then((carts) => {
+                          setCarts(carts);
+                        });
+                    }}
+                  >
+                    <Text
+                      style={{
+                        color: '#20a869',
+                        fontWeight: 'bold',
+                        fontSize: 20,
+                        paddingHorizontal: 6,
+                      }}
+                    >
+                      +
+                    </Text>
+                  </TouchableHighlight>
                 </View>
               </View>
-              <View style={styles.qtyContainer}>
-                <TouchableHighlight
-                  underlayColor={'#bfbfbf80'}
-                  style={{
-                    borderRadius: 4,
-                  }}
-                  onPress={() => {
-                    removeQty(cart.Product.id)
-                      .then(() => {
-                        return fetchCart();
-                      })
-                      .then((carts) => {
-                        setCarts(carts);
-                      });
-                  }}
-                >
-                  <Text
-                    style={{
-                      color: '#20a869',
-                      fontWeight: 'bold',
-                      fontSize: 20,
-                      paddingHorizontal: 6,
-                    }}
-                  >
-                    -
-                  </Text>
-                </TouchableHighlight>
-                <Text
-                  style={{
-                    paddingHorizontal: 10,
-                    textAlign: 'center',
-                    borderRadius: 4,
-                    color: '#888',
-                  }}
-                >
-                  {cart.Product.qty}
-                </Text>
-                <TouchableHighlight
-                  underlayColor={'#bfbfbf80'}
-                  style={{
-                    borderRadius: 4,
-                  }}
-                  onPress={() => {
-                    addQty(cart.Product.id)
-                      .then(() => {
-                        return fetchCart();
-                      })
-                      .then((carts) => {
-                        setCarts(carts);
-                      });
-                  }}
-                >
-                  <Text
-                    style={{
-                      color: '#20a869',
-                      fontWeight: 'bold',
-                      fontSize: 20,
-                      paddingHorizontal: 6,
-                    }}
-                  >
-                    +
-                  </Text>
-                </TouchableHighlight>
-              </View>
-            </View>
-          );
-        })}
+            );
+          })}
+        </ScrollView>
       </View>
       {carts.length ? (
         <TouchableHighlight

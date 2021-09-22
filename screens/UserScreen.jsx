@@ -8,6 +8,7 @@ import {
   Text,
   TouchableHighlight,
   View,
+  RefreshControl,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '../components/Header';
@@ -25,6 +26,7 @@ const windowWidth = Dimensions.get('window').width;
 export default function UserScreen() {
   const [history, setHistory] = useState([]);
   const [isToken, setIsToken] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
   const navigation = useNavigation();
 
@@ -48,7 +50,21 @@ export default function UserScreen() {
         <Header />
         <View style={styles.spaceContainer}>
           <Text style={styles.subTitle}>My Orders</Text>
-          <ScrollView>
+          <ScrollView
+            refreshControl={
+              <RefreshControl
+                colors={['#52d9a8']}
+                refreshing={refreshing}
+                onRefresh={() => {
+                  setRefreshing(true);
+                  fetchHistory().then((returnValue) => {
+                    setHistory(returnValue);
+                    setRefreshing(false);
+                  });
+                }}
+              />
+            }
+          >
             {history.map((data, i) => {
               return <OrderCard key={'order-history-' + i} data={data} />;
             })}
