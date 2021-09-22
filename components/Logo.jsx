@@ -19,7 +19,16 @@ export default function Logo() {
     <View style={styles.container}>
       <TouchableHighlight
         underlayColor="#00000000"
-        onPress={() => navigation.navigate('Home')}
+        onPress={() =>
+          navigation.reset({
+            index: 0,
+            routes: [
+              {
+                name: 'Home',
+              },
+            ],
+          })
+        }
       >
         <Image source={logo} style={styles.image} />
       </TouchableHighlight>
