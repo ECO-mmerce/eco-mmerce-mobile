@@ -44,7 +44,7 @@ export default function CartCard() {
 
     return `Rp ${totalPrice
       .toString()
-      .replace(/\B(?=(\d{3})+(?!\d))/g, ',')} , 00`;
+      .replace(/\B(?=(\d{3})+(?!\d))/g, '.')},00`;
   };
 
   return (
@@ -99,8 +99,8 @@ export default function CartCard() {
                     Rp
                     {cart.Product.price
                       .toString()
-                      .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                    , 00
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, '.')}
+                    ,00
                   </Text>
                   <View style={{ flex: 1, justifyContent: 'flex-end' }}>
                     <Text
