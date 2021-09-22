@@ -21,6 +21,8 @@ export default function DetailScreen({ route, navigation }) {
     );
   }, []);
 
+  console.log(productDetail);
+
   return (
     <SafeAreaView style={styles.container}>
       <Header />
@@ -97,8 +99,8 @@ export default function DetailScreen({ route, navigation }) {
           <Text style={{ ...styles.productSubTitle, color: 'red' }}>
             Harmful Ingredients
           </Text>
-          {productDetail.harmfulIngidient?.length ? (
-            productDetail.harmfulIngidient?.map((ingredient, i) => (
+          {productDetail.status !== 'Eco' ? (
+            productDetail.harmfulIngridient?.map((ingredient, i) => (
               <Text
                 style={{ color: '#404040' }}
                 key={'harmful-ingredient-list-' + i}
@@ -115,7 +117,13 @@ export default function DetailScreen({ route, navigation }) {
         <View style={{ flex: 1, marginRight: 8 }}>
           <Button
             title="Add to cart"
-            color={Number(productDetail.status) ? '#ffc273' : '#20a869'}
+            color={
+              productDetail.status === 'Warn'
+                ? '#ffc273'
+                : productDetail.status === 'Harmful'
+                ? '#ff6854'
+                : '#20a869'
+            }
             onPress={() => {
               addQty(productDetail.id);
             }}

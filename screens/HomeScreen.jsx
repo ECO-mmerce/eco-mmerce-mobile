@@ -1,11 +1,14 @@
 import { Ionicons } from '@expo/vector-icons';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
+  Animated,
+  Button,
   FlatList,
   RefreshControl,
   StyleSheet,
   Text,
   TouchableHighlight,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -18,10 +21,32 @@ const renderItem = ({ item }) => <ItemCard product={item} />;
 export default function HomeScreen({ navigation }) {
   const [products, setProducts] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
+  const scaleAnim = useRef(new Animated.Value(1)).current;
 
   useEffect(() => {
     fetchProducts().then((returnValue) => setProducts(returnValue));
   }, []);
+
+  const AnimatedTouchableHighlight =
+    Animated.createAnimatedComponent(TouchableHighlight);
+
+  const scaleIn = () => {
+    // Will change scaleAnim value to 1 in 5 seconds
+    Animated.timing(scaleAnim, {
+      toValue: 1,
+      duration: 200,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const scaleOut = () => {
+    // Will change scaleAnim value to 0 in 5 seconds
+    Animated.timing(scaleAnim, {
+      toValue: 0,
+      duration: 200,
+      useNativeDriver: true,
+    }).start();
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -45,14 +70,37 @@ export default function HomeScreen({ navigation }) {
         keyExtractor={(item) => {
           return item.id.toString();
         }}
-      />
-      <TouchableHighlight
-        style={{
-          position: 'absolute',
-          bottom: 20,
-          right: 20,
-          borderRadius: 50,
+        onScroll={({ nativeEvent }) => {
+          if (
+            nativeEvent.contentOffset.y >
+            (nativeEvent.contentSize.height -
+              nativeEvent.layoutMeasurement.height) /
+              2
+          ) {
+            scaleOut();
+          } else {
+            scaleIn();
+          }
         }}
+      />
+      {/* Scan button */}
+      <AnimatedTouchableHighlight
+        style={[
+          {
+            position: 'absolute',
+            bottom: 20,
+            right: 20,
+            borderRadius: 50,
+          },
+          {
+            opacity: scaleAnim,
+            transform: [
+              {
+                scale: scaleAnim,
+              },
+            ],
+          },
+        ]}
         underlayColor="#333"
         onPress={() => navigation.navigate('CheckProduct')}
       >
@@ -67,7 +115,7 @@ export default function HomeScreen({ navigation }) {
         >
           <Ionicons name="ios-scan" size={18} color="#5c5c5c" />
         </View>
-      </TouchableHighlight>
+      </AnimatedTouchableHighlight>
     </SafeAreaView>
   );
 }

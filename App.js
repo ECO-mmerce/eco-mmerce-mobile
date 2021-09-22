@@ -25,6 +25,7 @@ export default function App() {
           <Stack.Screen
             name="Home"
             component={HomeScreen}
+            // component={Animate}
             options={{
               headerShown: false,
             }}
