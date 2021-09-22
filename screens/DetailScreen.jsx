@@ -48,6 +48,7 @@ export default function DetailScreen({ route, navigation }) {
           {productDetail.price
             ?.toString()
             .replace(/\B(?=(\d{3})+(?!\d))/g, '.')}
+          ,00
         </Text>
         <View
           style={{

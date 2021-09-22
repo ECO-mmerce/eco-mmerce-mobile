@@ -19,8 +19,8 @@ export default function OrderCard({ data }) {
         {/* <Text style={styles.orderId}>Qty. {data.Product.qty}</Text> */}
         <Text style={styles.orderId}>
           Total: Rp
-          {data.Product.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')},
-          00
+          {data.Product.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')}
+          ,00
         </Text>
       </View>
       <View>
